@@ -5,6 +5,8 @@ import html from '@web/rollup-plugin-html';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import { terser } from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace';
+import copy from "rollup-plugin-copy";
+
 
 export default {
   input: 'index.html',
@@ -22,9 +24,14 @@ export default {
   },
 
   plugins: [
+    copy({
+      targets: [{ src: "public/*", dest: "dist" }],
+    }),
     /** Enable using HTML as rollup entrypoint */
     replace({
-      'process.env.HC_PORT': '8888',
+      'process.env.HC_PORT': '8000',
+      // 'process.env.HC_PORT': '8888',
+      // 'process.env.HC_PORT': '8001',
       delimiters: ['', ''],
     }),
     html({

@@ -13,8 +13,9 @@
     "package": "npm run build && cd dist && bestzip ../dist.zip *"
   },
   "dependencies": {
+    "@holochain-open-dev/cell-client": "^0.6.1",
     "@holochain-open-dev/utils": "^0.2.2",
-    "@holochain/client": "^0.5.0",
+    "@holochain/client": "^0.6.0",
     "@lit-labs/context": "^0.1.1",
     "@material/mwc-button": "^0.25.3",
     "@material/mwc-circular-progress": "^0.25.3",
@@ -22,7 +23,9 @@
     "@type-craft/content": "^0.0.7",
     "@type-craft/title": "^0.0.8",
     "@webcomponents/scoped-custom-element-registry": "0.0.5",
-    "lit": "^2.0.2"
+    "js-confetti": "^0.10.2",
+    "lit": "^2.0.2",
+    "lit-svelte-stores": "^0.2.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.0",
@@ -30,6 +33,7 @@
     "@open-wc/eslint-config": "^4.3.0",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "18.0.0",
+    "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-replace": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
@@ -38,6 +42,7 @@
     "@web/dev-server-rollup": "^0.3.10",
     "@web/rollup-plugin-html": "^1.9.1",
     "@web/rollup-plugin-import-meta-assets": "^1.0.7",
+    "rollup-plugin-copy": "^3.4.0",
     "babel-plugin-template-html-minifier": "^4.1.0",
     "bestzip": "^2.2.0",
     "concurrently": "^6.2.1",

@@ -1,6 +1,17 @@
-# ephemeral-chat
+# Burner Chat
 
-## Environment Setup
+Think of it like burner phones, but for chat. Makes sense?!
+
+We, the burner chat core team are living our lives with this very simple ruleset:
+- No Security
+- No Consistency
+- Just Signals
+
+![Bildschirmfoto vom 2022-07-22 09-16-59](https://user-images.githubusercontent.com/44790691/180385441-b21f359b-51ed-4b5a-9c31-53ee5c0a5f23.jpg)
+
+### built during holochain immersive july 2022 in Tirol, Austria.
+
+# Environment Setup
 
 1. Install the holochain dev environment (only nix-shell is required): https://developer.holochain.org/docs/install/
 2. Enable Holochain cachix with:
@@ -11,7 +22,7 @@ cachix use holochain-ci
 ```
 
 3. Clone this repo and `cd` inside of it.
-4. Enter the nix shell by running this in the root folder of the repository: 
+4. Enter the nix shell by running this in the root folder of the repository:
 
 ```bash
 nix-shell
@@ -35,7 +46,7 @@ Substitute the "3" for the number of nodes that you want to bootstrap in your ne
 This will also bring up the Holochain Playground for advanced introspection of the conductors.
 
 ## Running an agent
- 
+
 If you only want to run a single conductor and a UI connected to it:
 
 ```bash
@@ -83,3 +94,9 @@ This repository is using this tooling:
 - [@holochain/tryorama](https://www.npmjs.com/package/@holochain/tryorama): test framework.
 - [@holochain/client](https://www.npmjs.com/package/@holochain/client): client library to connect to Holochain from the UI.
 - [@holochain-playground/cli](https://www.npmjs.com/package/@holochain-playground/cli): introspection tooling to understand what's going on in the Holochain nodes.
+
+// TODO 
+// - [ ] icons only on one tab
+// - [ ] your chat tab separate and bigger
+// - [X] space icons buttons evenly
+// - [X] add unicors and make burn and burn emoji
