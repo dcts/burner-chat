@@ -59,6 +59,9 @@ export class ChatBubble extends LitElement {
   @state()
   timer: any = null;
 
+  @state()
+  isConfettiSource: boolean = false;
+
   channel = new TaskSubscriber(
     this,
     () => this.service.getChannel(),
@@ -68,7 +71,7 @@ export class ChatBubble extends LitElement {
   addToBuffer(chatBufferElement: ChatBufferElement) {
     // let newBuffer = this.chatBuffer.concat(chatBufferElement);
     this.chatBuffer = [...this.chatBuffer, chatBufferElement];
-    this.printBuffer();
+    // this.printBuffer();
   }
 
   updateBuffer() {
@@ -80,7 +83,6 @@ export class ChatBubble extends LitElement {
       return delta < 3500;
     });
     this.chatBufferString = this.bufferToString();
-    // (this.shadowRoot?.getElementById("on-admin-text-bubble") as HTMLTextAreaElement).value = this.chatBufferString;
   }
 
   sortBuffer() {
@@ -100,7 +102,20 @@ export class ChatBubble extends LitElement {
     console.log(this.bufferToString());
   }
 
-  _handleClick(emoji: string) {
+  async _handleEmojiClick(emoji: string) {
+
+    const recipients = Object.keys(this.channelMembers).map(key => deserializeHash(key));
+
+    const msgInput: MessageInput = {
+      signalType: "EmojiCannon",
+      payload: emoji,
+      senderName: this.username,
+      recipients: recipients,
+      channel: this.channel.value!,
+    }
+
+    await this.service.sendMsg(msgInput);
+
     const jsConfetti = new JSConfetti()
     jsConfetti.addConfetti({
       emojis: [emoji],
@@ -108,7 +123,7 @@ export class ChatBubble extends LitElement {
   }
 
 
-  recieveSignal(signal: AppSignal) {
+  receiveSignal(signal: AppSignal) {
     if (this.isAdmin) {
       return; // no logic for admin
     }
@@ -124,7 +139,23 @@ export class ChatBubble extends LitElement {
     const textarea = this.shadowRoot?.getElementById("non-admin-text-bubble") as HTMLTextAreaElement;
     textarea.value += str;
   }
-  
+
+
+
+  causedEmojiCannon() {
+    if (this.isAdmin) {
+      return; // no logic for admin
+    }
+    this.isConfettiSource = true;
+    const confettSourceInterval = setInterval(() => this.isConfettiSource = !this.isConfettiSource, 400);
+
+    setTimeout(() => {
+      clearInterval(confettSourceInterval);
+      this.isConfettiSource = false;
+    }, 1200);
+
+  }
+
   // async signalCallback(signalInput: AppSignal) {
 
   //   let msg: Message = signalInput.data.payload;
@@ -155,14 +186,14 @@ export class ChatBubble extends LitElement {
     } else {
       setInterval(() => {
           this.updateBuffer();
-          this.printBuffer();
+          // this.printBuffer();
       }, 200);
     }
   }
 
   renderEmoji(emoji: string, i: number) {
     return html`
-    <button @click="${() => this._handleClick(emoji)}" class="emoji-btn">
+    <button @click="${() => this._handleEmojiClick(emoji)}" class="emoji-btn">
       <div class="${emoji === '🔥' ? 'waving' : ''}">${emoji}</span>
     </button>`
   }
@@ -189,17 +220,12 @@ export class ChatBubble extends LitElement {
       channel: this.channel.value!,
     }
     await this.service.sendMsg(msgInput);
-
-
-
-    // this.timer = setTimeout(() => {(this.shadowRoot?.getElementById("admin-text-bubble") as HTMLTextAreaElement).value = ""; console.log("proof", ev.target)}, 3500);
-
   }
 
 
   render() {
     return html`
-        <div class="chat-bubble">
+        <div class="chat-bubble ${this.isConfettiSource ? "confetti-source" : ""}">
           <div class="chat-quote ${this.isAdmin ? 'admin': ''}">
             ${this.isAdmin
               ? html`<textarea id="admin-text-bubble" @keyup=${this.dispatchRealtimeSignal} placeholder="Insert your message" rows="2" wrap="hard" maxlength="50"></textarea>`
@@ -259,12 +285,15 @@ export class ChatBubble extends LitElement {
   }
 
   .chat-bubble {
-    /* background-color: white;
-    border: 1px solid gray; */
     padding: 8px;
     margin: 8px;
     max-width: 500px;
     position: relative;
+  }
+
+  .confetti-source {
+    background: orange;
+    border-radius: 20px;
   }
 
   .chat-header {
@@ -325,7 +354,7 @@ export class ChatBubble extends LitElement {
   .emoji-btn {
     background-color: rgb(255 255 255);
     border: 1px solid rgb(234 234 234);
-    
+
     border-radius: 9px;
     margin: 5px;
     /* padding: 10px; */

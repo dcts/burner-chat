@@ -160,7 +160,7 @@ export class HolochainApp extends LitElement {
       this.activeChannelMembers = activeChannelMembers;
 
     } else if (signalType === "BurnChannel" && signalPayload.channel === this.activeChannel.value) {
-      console.log("BURNING SIGNAL RECEIVED")
+      // console.log("BURNING SIGNAL RECEIVED")
       this.chatScreen.receiveBurnSignal(signal);
     }
   }
@@ -193,7 +193,7 @@ export class HolochainApp extends LitElement {
     // get name and set as username
     let username = this.enterNameInput.value
     const channelToJoin = this.joinChannelInput.value;
-    
+
     if (!username) {
       alert("🚧 Plase set a username!");
       return;
@@ -224,7 +224,7 @@ export class HolochainApp extends LitElement {
     // }
     await this.service.joinChannel(input);
     const channelMembers = await this.service.getChannelMembers(input.channel);
-    console.log(channelMembers);
+    // console.log(channelMembers);
     this.activeChannelMembers = {};
     channelMembers.forEach(([pubKey, username]) => {
       this.activeChannelMembers[serializeHash(pubKey)] = username;
@@ -246,7 +246,7 @@ export class HolochainApp extends LitElement {
         <input class="landing-input" .value=${this.username.value ? this.username.value : ""} id="enter-name" type="text" placeholder="enter name"/>
         <input class="landing-input" id="join-channel" type="text" placeholder="join channel"/>
         <button id="start-bttn" @click=${this.start}>
-          ${this.startBttnLoading 
+          ${this.startBttnLoading
             ? html`<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>`
             : html`<div>START</div>`
           }
@@ -256,7 +256,7 @@ export class HolochainApp extends LitElement {
   }
 
   async switchChannel(ev: CustomEvent) {
-    console.log("inside switchChannel");
+    // console.log("inside switchChannel");
     this.service.setChannel(ev.detail);
     const join_channel_input: ChannelMessageInput = {
       signalType: "JoinChannel",
@@ -266,7 +266,7 @@ export class HolochainApp extends LitElement {
 
     this.joinChannel(join_channel_input);
 
-    console.log("new channel value: ", this.activeChannel.value);
+    // console.log("new channel value: ", this.activeChannel.value);
   }
 
   fetchMembers = async () => {
@@ -277,7 +277,7 @@ export class HolochainApp extends LitElement {
 
     const members = await this.service.getChannelMembers(this.activeChannel.value!);
     const newActiveChannelMembers: Record<AgentPubKeyB64, Username> = {};
-    
+
     members.forEach(([pubKey, username]) => {
       newActiveChannelMembers[serializeHash(pubKey)] = username;
     });
@@ -286,7 +286,7 @@ export class HolochainApp extends LitElement {
   }
 
   goHome() {
-    console.log("GOING HOME");
+    // console.log("GOING HOME");
     this.service.setChannel(undefined);
   }
 
@@ -307,7 +307,7 @@ export class HolochainApp extends LitElement {
       `;
     }
 
-    console.log("ACTIVE CHANNEL: ", this.activeChannel.value);
+    // console.log("ACTIVE CHANNEL: ", this.activeChannel.value);
 
     // console.log("CHANNEL MEMBERS: ", this.channelMembers);
 
